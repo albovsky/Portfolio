@@ -8,6 +8,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-manrope);
   --font-display: var(--font-syne);
+  --font-serif: var(--font-playfair);
   --font-mono: var(--font-jetbrains);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -52,31 +53,31 @@
   --card-foreground: #f0f0f0;
   --popover: #0a0a0a;
   --popover-foreground: #f0f0f0;
-  --primary: #FFD700; /* Yellow */
+  --primary: #ffffff; /* White */
   --primary-foreground: #000000;
   --secondary: #1a1a1a;
   --secondary-foreground: #f0f0f0;
   --muted: #1a1a1a;
   --muted-foreground: #888888;
   --accent: #1a1a1a;
-  --accent-foreground: #FFD700;
+  --accent-foreground: #ffffff;
   --destructive: #ff0055;
   --border: #333333;
   --input: #333333;
-  --ring: #FFD700;
-  --chart-1: #FFD700;
+  --ring: #ffffff;
+  --chart-1: #ffffff;
   --chart-2: #00ccff;
   --chart-3: #ff0055;
   --chart-4: #ffff00;
   --chart-5: #ff00ff;
   --sidebar: #050505;
   --sidebar-foreground: #f0f0f0;
-  --sidebar-primary: #FFD700;
+  --sidebar-primary: #ffffff;
   --sidebar-primary-foreground: #000000;
   --sidebar-accent: #1a1a1a;
-  --sidebar-accent-foreground: #FFD700;
+  --sidebar-accent-foreground: #ffffff;
   --sidebar-border: #333333;
-  --sidebar-ring: #FFD700;
+  --sidebar-ring: #ffffff;
 }
 
 .dark {
@@ -86,31 +87,31 @@
   --card-foreground: #f0f0f0;
   --popover: #0a0a0a;
   --popover-foreground: #f0f0f0;
-  --primary: #FFD700;
+  --primary: #ffffff;
   --primary-foreground: #000000;
   --secondary: #1a1a1a;
   --secondary-foreground: #f0f0f0;
   --muted: #1a1a1a;
   --muted-foreground: #888888;
   --accent: #1a1a1a;
-  --accent-foreground: #FFD700;
+  --accent-foreground: #ffffff;
   --destructive: #ff0055;
   --border: #333333;
   --input: #333333;
-  --ring: #FFD700;
-  --chart-1: #FFD700;
+  --ring: #ffffff;
+  --chart-1: #ffffff;
   --chart-2: #00ccff;
   --chart-3: #ff0055;
   --chart-4: #ffff00;
   --chart-5: #ff00ff;
   --sidebar: #050505;
   --sidebar-foreground: #f0f0f0;
-  --sidebar-primary: #FFD700;
+  --sidebar-primary: #ffffff;
   --sidebar-primary-foreground: #000000;
   --sidebar-accent: #1a1a1a;
-  --sidebar-accent-foreground: #FFD700;
+  --sidebar-accent-foreground: #ffffff;
   --sidebar-border: #333333;
-  --sidebar-ring: #FFD700;
+  --sidebar-ring: #ffffff;
 }
 
 @layer base {
