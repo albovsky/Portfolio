@@ -8,4 +8,3 @@ export const stickerTemplates: StickerTemplate[] = [
     defaultPosition: { x: 720, y: 160 },
   },
 ]
-
