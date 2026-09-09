@@ -36,7 +36,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <body
         className={`${syne.variable} ${manrope.variable} ${jetbrainsMono.variable} ${playfair.variable} antialiased min-h-screen flex flex-col bg-background text-foreground font-sans selection:bg-primary selection:text-primary-foreground`}
       >

@@ -87,7 +87,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
             ))}
           </div>
         ) : (
-          <div className="h-[40vh] flex items-center justify-center border border-dashed border-white/10 rounded-lg">
+          <div className="h-[40vh] flex items-center justify-center border border-dashed border-border rounded-lg bg-card/50">
             <p className="text-muted-foreground">No photos available for this project yet.</p>
           </div>
         )}

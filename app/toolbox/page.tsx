@@ -1,9 +1,9 @@
 "use client"
 
-import React from "react"
-import { motion } from "framer-motion"
+import { useLayoutEffect, useRef } from "react"
 import { ArrowUpRight } from "lucide-react"
 import Link from "next/link"
+import { gsap } from "@/lib/gsap"
 
 // ----------------------------------------------------------------------
 // DATA: APPLICATIONS
@@ -102,6 +102,55 @@ const hardware = [
 ]
 
 export default function ToolboxPage() {
+  const headerRef = useRef<HTMLDivElement>(null)
+  const pageRef = useRef<HTMLDivElement>(null)
+
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      if (headerRef.current) {
+        gsap.fromTo(
+          headerRef.current,
+          { autoAlpha: 0, y: 20 },
+          { autoAlpha: 1, y: 0, duration: 0.7, ease: "power3.out" }
+        )
+      }
+
+      if (pageRef.current) {
+        const revealGroups = [
+          { selector: "[data-tool-chip='applications']", stagger: 0.03 },
+          { selector: "[data-tool-chip='editors']", stagger: 0.03 },
+          { selector: "[data-tool-chip='ai']", stagger: 0.03 },
+          { selector: "[data-hardware-card]", stagger: 0.08 },
+        ]
+
+        revealGroups.forEach(({ selector, stagger }) => {
+          const elements = gsap.utils.toArray<HTMLElement>(selector, pageRef.current)
+          if (elements.length === 0) return
+
+          gsap.fromTo(
+            elements,
+            { autoAlpha: 0, y: 20, scale: 0.92 },
+            {
+              autoAlpha: 1,
+              y: 0,
+              scale: 1,
+              duration: 0.55,
+              stagger,
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: elements[0],
+                start: "top bottom-=120",
+                once: true,
+              },
+            }
+          )
+        })
+      }
+    }, pageRef)
+
+    return () => ctx.revert()
+  }, [])
+
   return (
     <>
       <style jsx>{`
@@ -111,19 +160,15 @@ export default function ToolboxPage() {
         }
       `}</style>
       
-      <div className="min-h-screen bg-background text-foreground pt-32 px-6 md:px-12 pb-24 overflow-x-hidden">
+      <div ref={pageRef} className="min-h-screen bg-background text-foreground pt-32 px-6 md:px-12 pb-24 overflow-x-hidden">
       {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="mb-24 text-center max-w-4xl mx-auto"
-      >
+      <div ref={headerRef} className="mb-24 text-center max-w-4xl mx-auto">
         <h1 className="text-5xl md:text-7xl font-bold tracking-tighter mb-6">
           Hardware && software
           <br />
           <span className="text-muted-foreground">I keep in my toolbox.</span>
         </h1>
-      </motion.div>
+      </div>
 
       {/* Section: Software */}
       <div className="mb-24 max-w-5xl mx-auto">
@@ -138,22 +183,17 @@ export default function ToolboxPage() {
           <h3 className="text-center text-xs font-mono text-muted-foreground uppercase tracking-widest mb-8">Everyday Tools</h3>
           <div className="flex flex-wrap justify-center gap-4">
             {applications.map((app, index) => (
-              <motion.div
+              <div
                 key={app.name}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.03, type: "spring", stiffness: 200, damping: 15 }}
-                
+                data-tool-chip="applications"
                 style={{
                   rotate: `${(index % 2 === 0 ? -1 : 1) * (0.5 + (index % 5) * 0.2)}deg`,
                   animation: `float ${3 + (index % 3) * 0.5}s ease-in-out ${index * 0.2}s infinite`,
                 }}
-                
-                className="group relative bg-white dark:bg-zinc-900 border-[3px] border-zinc-300/30 dark:border-zinc-700/30 rounded-full pl-2 pr-6 py-2 flex items-center gap-3 shadow-[0_4px_12px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-shadow outline-none ring-0"
+                className="group relative bg-card border-[3px] border-border/60 rounded-full pl-2 pr-6 py-2 flex items-center gap-3 shadow-[0_4px_12px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-shadow outline-none ring-0"
               >
                 {/* Tooltip */}
-                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-xs font-mono rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-foreground text-background text-xs font-mono rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
                   {app.description}
                 </div>
 
@@ -173,10 +213,10 @@ export default function ToolboxPage() {
                 </div>
                 
                 {/* Text */}
-                <span className="font-mono font-medium text-zinc-800 dark:text-zinc-100 text-base tracking-normal">
+                <span className="font-mono font-medium text-foreground text-base tracking-normal">
                   {app.name}
                 </span>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -186,22 +226,17 @@ export default function ToolboxPage() {
           <h3 className="text-center text-xs font-mono text-muted-foreground uppercase tracking-widest mb-8">Editors</h3>
           <div className="flex flex-wrap justify-center gap-4">
             {editors.map((app, index) => (
-              <motion.div
+              <div
                 key={app.name}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.03, type: "spring", stiffness: 200, damping: 15 }}
-                
+                data-tool-chip="editors"
                 style={{
                   rotate: `${(index % 2 === 0 ? -1 : 1) * (0.5 + (index % 5) * 0.2)}deg`,
                   animation: `float ${3 + (index % 3) * 0.5}s ease-in-out ${index * 0.2}s infinite`,
                 }}
-                
-                className="group relative bg-white dark:bg-zinc-900 border-[3px] border-zinc-300/30 dark:border-zinc-700/30 rounded-full pl-2 pr-6 py-2 flex items-center gap-3 shadow-[0_4px_12px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-shadow outline-none ring-0"
+                className="group relative bg-card border-[3px] border-border/60 rounded-full pl-2 pr-6 py-2 flex items-center gap-3 shadow-[0_4px_12px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-shadow outline-none ring-0"
               >
                 {/* Tooltip */}
-                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-xs font-mono rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-foreground text-background text-xs font-mono rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
                   {app.description}
                 </div>
 
@@ -221,10 +256,10 @@ export default function ToolboxPage() {
                 </div>
                 
                 {/* Text */}
-                <span className="font-mono font-medium text-zinc-800 dark:text-zinc-100 text-base tracking-normal">
+                <span className="font-mono font-medium text-foreground text-base tracking-normal">
                   {app.name}
                 </span>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -234,22 +269,17 @@ export default function ToolboxPage() {
           <h3 className="text-center text-xs font-mono text-muted-foreground uppercase tracking-widest mb-8">AI Tools</h3>
           <div className="flex flex-wrap justify-center gap-4">
             {aiTools.map((app, index) => (
-              <motion.div
+              <div
                 key={app.name}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.03, type: "spring", stiffness: 200, damping: 15 }}
-                
+                data-tool-chip="ai"
                 style={{
                   rotate: `${(index % 2 === 0 ? -1 : 1) * (0.5 + (index % 5) * 0.2)}deg`,
                   animation: `float ${3 + (index % 3) * 0.5}s ease-in-out ${index * 0.2}s infinite`,
                 }}
-                
-                className="group relative bg-white dark:bg-zinc-900 border-[3px] border-zinc-300/30 dark:border-zinc-700/30 rounded-full pl-2 pr-6 py-2 flex items-center gap-3 shadow-[0_4px_12px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-shadow outline-none ring-0"
+                className="group relative bg-card border-[3px] border-border/60 rounded-full pl-2 pr-6 py-2 flex items-center gap-3 shadow-[0_4px_12px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-shadow outline-none ring-0"
               >
                 {/* Tooltip */}
-                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-xs font-mono rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-foreground text-background text-xs font-mono rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
                   {app.description}
                 </div>
 
@@ -269,10 +299,10 @@ export default function ToolboxPage() {
                 </div>
                 
                 {/* Text */}
-                <span className="font-mono font-medium text-zinc-800 dark:text-zinc-100 text-base tracking-normal">
+                <span className="font-mono font-medium text-foreground text-base tracking-normal">
                   {app.name}
                 </span>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -287,13 +317,10 @@ export default function ToolboxPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-20">
-          {hardware.map((item, index) => (
-            <motion.div
+          {hardware.map((item) => (
+            <div
               key={item.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              viewport={{ once: true }}
+              data-hardware-card
               className="group rounded-2xl flex flex-col justify-between gap-6 relative"
               style={{ paddingTop: item.image ? '10rem' : '2rem', paddingLeft: '2rem', paddingRight: '2rem', paddingBottom: '2rem' }}
             >
@@ -330,7 +357,7 @@ export default function ToolboxPage() {
               >
                 Learn more <ArrowUpRight className="w-3 h-3" />
               </Link>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

@@ -1,6 +1,7 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { useLayoutEffect, useRef } from "react"
+import { gsap } from "@/lib/gsap"
 
 const videos = [
   { id: 1, title: "The Awakening", duration: "02:14" },
@@ -10,26 +11,58 @@ const videos = [
 ]
 
 export default function VideoPage() {
+  const titleRef = useRef<HTMLHeadingElement>(null)
+  const listRef = useRef<HTMLDivElement>(null)
+
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      if (titleRef.current) {
+        gsap.fromTo(
+          titleRef.current,
+          { autoAlpha: 0, y: 50 },
+          { autoAlpha: 1, y: 0, duration: 0.7, ease: "power3.out" }
+        )
+      }
+
+      if (listRef.current) {
+        gsap.fromTo(
+          "[data-video-row]",
+          { autoAlpha: 0, x: -50 },
+          {
+            autoAlpha: 1,
+            x: 0,
+            duration: 0.5,
+            stagger: 0.1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: listRef.current,
+              start: "top bottom-=120",
+              once: true,
+            },
+          }
+        )
+      }
+    })
+
+    return () => ctx.revert()
+  }, [])
+
   return (
     <div className="min-h-screen bg-background text-foreground pt-24 px-6 md:px-12">
-      <motion.h1 
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
+      <h1
+        ref={titleRef}
         className="text-6xl md:text-9xl font-bold tracking-tighter mb-12 text-transparent stroke-text hover:text-primary transition-colors duration-500 cursor-default"
         style={{ WebkitTextStroke: "1px var(--foreground)" }}
       >
         VIDEO
-      </motion.h1>
+      </h1>
 
-      <div className="flex flex-col gap-0 pb-24">
-        {videos.map((video, index) => (
-          <motion.div
+      <div ref={listRef} className="flex flex-col gap-0 pb-24">
+        {videos.map((video) => (
+          <div
             key={video.id}
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-            viewport={{ once: true }}
-            className="group border-t border-white/10 py-12 flex justify-between items-center cursor-pointer hover:bg-white/5 transition-colors px-4"
+            data-video-row
+            className="group border-t border-border py-12 flex justify-between items-center cursor-pointer hover:bg-card transition-colors px-4"
           >
             <h2 className="text-4xl md:text-6xl font-bold tracking-tighter group-hover:translate-x-4 transition-transform duration-300">
               {video.title}
@@ -37,9 +70,9 @@ export default function VideoPage() {
             <span className="font-mono text-sm text-muted-foreground group-hover:text-primary transition-colors">
               {video.duration}
             </span>
-          </motion.div>
+          </div>
         ))}
-        <div className="border-t border-white/10" />
+        <div className="border-t border-border" />
       </div>
     </div>
   )

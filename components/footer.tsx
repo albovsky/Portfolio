@@ -31,9 +31,9 @@ export function Footer() {
           .
           <button
             onClick={() => setShowGame(true)}
-            className="ml-2 text-muted-foreground/20 hover:text-red-500 transition-colors cursor-help text-xs"
+            className="ml-2 text-muted-foreground hover:text-muted-foreground transition-colors cursor-help text-sm"
           >
-            (don't click it)!
+            (don&apos;t click it)!
           </button>
         </p>
       </div>
