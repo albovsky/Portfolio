@@ -1,0 +1,38 @@
+.pett-promo { display:block; overflow:hidden; border-radius:inherit; background:#0c3327; color:#fff9e9; isolation:isolate; text-decoration:none; }
+.pett-promo::after { content:""; position:absolute; inset:0; border-radius:inherit; box-shadow:inset 0 1px 0 #ffffff24; pointer-events:none; }
+.pett-promo-grain { position:absolute; inset:0; opacity:.16; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23fff' filter='url(%23n)' opacity='.4' d='M0 0h160v160H0z'/%3E%3C/svg%3E"); pointer-events:none; }
+.pett-promo-copy { position:relative; z-index:3; width:54%; height:100%; padding:4.7cqi 0 4.7cqi 5cqi; display:flex; flex-direction:column; align-items:flex-start; justify-content:space-between; }
+.pett-wordmark { display:block; position:relative; width:19cqi; height:15.5cqi; margin-top:1cqi; overflow:hidden; }
+.pett-wordmark img { position:absolute; width:190%; max-width:none; height:auto; left:-47%; top:-24%; }
+.pett-promo-message h2 { margin:0; font-size:clamp(21px,5.7cqi,44px); line-height:1.04; letter-spacing:-.055em; font-weight:500; }
+.pett-promo-message p { margin:2cqi 0 0; color:#bdd0c2; font-size:clamp(9px,1.9cqi,15px); line-height:1.5; letter-spacing:-.02em; }
+.pett-promo-cta { display:inline-flex; align-items:center; gap:2cqi; padding:1.35cqi 2cqi; border-radius:999px; background:#ffd35a; color:#173b2b; font-size:clamp(9px,1.75cqi,14px); font-weight:600; box-shadow:0 2px 0 #00000018,inset 0 1px #fff4c5; }
+.pett-promo-cta svg { width:2.6cqi; height:2.6cqi; transition:transform .35s ease; }
+.pett-promo-art { position:absolute; width:48%; height:100%; right:0; top:0; }
+.pett-orbit { position:absolute; border-radius:50%; border:1px solid #b5d0b122; pointer-events:none; }
+.pett-orbit-outer { width:53cqi; height:53cqi; top:3cqi; left:-1cqi; }
+.pett-orbit-inner { width:38cqi; height:38cqi; top:10.5cqi; left:6.5cqi; background:#74977a1a; border-color:#aacaac28; }
+.pett-icon-stage { position:absolute; width:26cqi; height:26cqi; left:9cqi; top:11cqi; border-radius:26%; transform:rotate(-12deg); box-shadow:1cqi 2.6cqi 3.5cqi #021d2380,0 0 0 1px #e6f0ce38,inset 0 1px #ffffff55; background:#0c3327; transition:transform .65s cubic-bezier(.22,1,.36,1); }
+.pett-icon-stage img { display:block; width:100%; height:100%; border-radius:inherit; }
+.pett-spark { position:absolute; left:3cqi; top:8cqi; width:5cqi; height:5cqi; fill:none; stroke:#ffd35a; stroke-width:3; stroke-linecap:round; }
+.pett-promo:hover .pett-icon-stage { transform:translateY(-1cqi) rotate(-5deg); }
+.pett-promo:hover .pett-promo-cta svg { transform:translate(2px,-2px); }
+.pett-promo:focus-visible { outline:3px solid #ffd35a; outline-offset:5px; }
+
+@media(prefers-reduced-motion:reduce) { .pett-promo * { transition:none!important; } .pett-promo:hover .pett-icon-stage { transform:rotate(-12deg); } .pett-promo * { animation:none!important; } }
+
+/* A little pet-world around the icon: drawn companions, a brass tag, and a loose lead. */
+.pett-companions { position:absolute; width:21cqi; height:14.5cqi; bottom:3cqi; left:0; color:#d4dec3; transform:rotate(-7deg); overflow:visible; }
+.pett-doodle-dog { transform-origin:110px 96px; transition:transform .6s cubic-bezier(.22,1,.36,1); }
+.pett-tag { position:absolute; width:11cqi; height:14cqi; right:3cqi; bottom:5cqi; transform:rotate(17deg); transform-origin:50% 5%; filter:drop-shadow(.6cqi 1cqi 1cqi #001d1a70); }
+.pett-tag-ring { position:absolute; top:0; left:3.5cqi; width:4cqi; height:5cqi; border:.45cqi solid #d6bb78; border-radius:50%; box-shadow:inset .15cqi 0 #fff5cc, .15cqi 0 #85713c; z-index:2; }
+.pett-tag-face { position:absolute; bottom:0; inset-inline:0; aspect-ratio:1; border-radius:50%; background:#ffd166; border:1px solid #ffedaa; box-shadow:inset -.4cqi -.6cqi #eab64b,inset .25cqi .2cqi #ffedab; display:grid; place-items:center; color:#174635; }
+.pett-tag-face svg { width:5cqi; height:5cqi; stroke-width:1.5; transform:translateY(.5cqi); }
+.pett-tag-face i { position:absolute; top:1cqi; left:calc(50% - .4cqi); width:.8cqi; height:.8cqi; background:#705a30; border-radius:50%; box-shadow:0 1px #fff0bf; }
+.pett-love-doodle { position:absolute; width:5cqi; height:5.5cqi; top:5cqi; right:5cqi; transform:rotate(12deg); stroke:#ffd166; stroke-width:2.4; stroke-linecap:round; }
+.pett-play-line { position:absolute; width:22cqi; height:10cqi; right:0; bottom:-1cqi; stroke:#91ad88; stroke-width:1.3; opacity:.65; pointer-events:none; }
+.pett-promo:hover .pett-tag { animation:pett-tag-swing 1.2s ease-in-out both; }
+.pett-promo:hover .pett-doodle-dog { transform:rotate(6deg) translateY(-2px); }
+@keyframes pett-tag-swing { 0% { transform:rotate(17deg); } 25% { transform:rotate(-12deg); } 52% { transform:rotate(9deg); } 76% { transform:rotate(-3deg); } 100% { transform:rotate(3deg); } }
+
+@media(max-width:699px) { #pett.bento-card { aspect-ratio:1.5; } .pett-promo-copy { width:58%; padding-block:6cqi; } .pett-wordmark { width:22cqi; height:18cqi; } .pett-promo-message h2 { font-size:6.3cqi; } .pett-promo-message p { font-size:2.6cqi; } .pett-promo-cta { font-size:2.6cqi; padding:2cqi 2.5cqi; } .pett-icon-stage { top:20cqi; } .pett-companions { bottom:10cqi; } .pett-tag { bottom:12cqi; } .pett-love-doodle { top:12cqi; } .pett-spark { top:16cqi; } }

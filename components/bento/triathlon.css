@@ -1,0 +1,48 @@
+/* Six shared colors for the race widget. */
+#triathlon {
+  --tri-background:#e4f477;
+  --tri-swim:#549bff;
+  --tri-bike:#37c8ad;
+  --tri-run:#ed7bc7;
+  --tri-icon:#c5ff35;
+  --tri-ink:#5c625e;
+  background:var(--tri-background);
+  box-shadow:0 24px 80px color-mix(in srgb,var(--tri-ink) 8%,transparent);
+}
+#triathlon::before {
+  background:linear-gradient(135deg,color-mix(in srgb,var(--tri-ink) 24%,transparent),color-mix(in srgb,var(--tri-ink) 6%,transparent) 35%,color-mix(in srgb,var(--tri-ink) 18%,transparent) 65%,color-mix(in srgb,var(--tri-ink) 6%,transparent));
+}
+
+/* A compact race instrument, sized by the shared 1 × 1 grid cell. */
+.tri-card { display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:auto minmax(0,1fr) clamp(30px,13cqi,48px) auto; gap:clamp(6px,2.5cqi,12px); height:100%; min-height:0; padding:clamp(16px,7cqi,28px); border-radius:var(--bento-radius); background:var(--tri-background); color:var(--tri-ink); font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif; }
+.tri-header { display:flex; justify-content:space-between; align-items:center; gap:8px; }
+.tri-header h2 { font-size:clamp(18px,6cqi,24px); font-weight:600; line-height:1.2; letter-spacing:-.025em; }
+.tri-header p { margin-top:4px; color:var(--tri-ink); font-size:clamp(14px,4.5cqi,18px); line-height:1.2; }
+.tri-result { display:flex; flex-direction:column; justify-content:center; min-width:0; min-height:0; container-type:inline-size; }
+.tri-result-label { color:var(--tri-ink); font-size:clamp(14px,4.5cqi,18px); line-height:1.3; }
+.tri-time { display:block; margin-top:1px; font-size:clamp(36px,21cqi,88px); white-space:nowrap; font-weight:700; font-variation-settings:"ROND" 100; line-height:1.05; letter-spacing:-.035em; font-variant-numeric:tabular-nums; color:var(--tri-active); transition:color .18s ease-out; }
+.tri-timeline { position:relative; min-height:0; }
+.tri-timeline svg { display:block; width:100%; height:100%; overflow:visible; }
+.tri-tick { transition:opacity .18s ease-out; }
+.tri-splits { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:2px; margin:0 -5px -5px; }
+.tri-split { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; min-width:0; min-height:48px; padding:7px 2px; border-radius:8px; cursor:default; transition:background .18s ease-out; }
+.tri-split>span { color:var(--tri-ink); font-size:clamp(14px,4.5cqi,18px); font-weight:500; }
+.tri-split strong { color:var(--tri-ink); font-size:clamp(14px,4.8cqi,20px); font-weight:500; font-variant-numeric:tabular-nums; letter-spacing:-.025em; white-space:nowrap; }
+.tri-split[data-active="true"] { background:color-mix(in srgb,var(--tri-ink) 10%,transparent); }
+.tri-split:focus-visible { outline:2px solid var(--tri-ink); outline-offset:2px; }
+@media(prefers-reduced-motion:reduce) { .tri-card * { transition:none!important; } }
+
+.tri-athlete { position:relative; width:clamp(48px,17cqi,64px); height:clamp(48px,17cqi,64px); flex-shrink:0; border-radius:50%; border:1px solid var(--tri-ink); background:var(--tri-ink); color:var(--tri-icon); }
+.tri-athlete>svg { position:absolute; inset:15%; width:70%; height:70%; opacity:0; }
+.tri-athlete[data-mode="cycle"]>svg { animation:tri-sport-cycle 9s ease-in-out infinite; }
+.tri-athlete[data-mode="cycle"]>.tri-athlete-bike { animation-delay:-6s; }
+.tri-athlete[data-mode="cycle"]>.tri-athlete-run { animation-delay:-3s; }
+.tri-athlete[data-mode="swim"]>.tri-athlete-swim,
+.tri-athlete[data-mode="bike"]>.tri-athlete-bike,
+.tri-athlete[data-mode="run"]>.tri-athlete-run { opacity:1; }
+.tri-athlete[data-paused="true"] * { animation-play-state:paused!important; }
+@keyframes tri-sport-cycle { 0%,28% { opacity:1; transform:translateY(0) scale(1); } 32%,96% { opacity:0; transform:translateY(2px) scale(.94); } 100% { opacity:1; transform:translateY(0) scale(1); } }
+@media(prefers-reduced-motion:reduce) {
+  .tri-athlete * { animation:none!important; }
+  .tri-athlete[data-mode="cycle"]>.tri-athlete-swim { opacity:1; }
+}
