@@ -1,7 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import { SecretGame } from "@/components/secret-game"
+import dynamic from "next/dynamic"
+
+const SecretGame = dynamic(() => import("@/components/secret-game").then(module => module.SecretGame), { ssr: false })
 
 export function Footer() {
   const [showGame, setShowGame] = useState(false)
@@ -38,7 +40,7 @@ export function Footer() {
         </p>
       </div>
       
-      <SecretGame isOpen={showGame} onClose={() => setShowGame(false)} />
+      {showGame && <SecretGame isOpen={showGame} onClose={() => setShowGame(false)} />}
     </footer>
   )
 }

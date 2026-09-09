@@ -2,6 +2,7 @@
 
 import { useLayoutEffect, useRef } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { gsap } from "@/lib/gsap"
 
@@ -14,11 +15,10 @@ export function Navbar() {
     const ctx = gsap.context(() => {
       gsap.fromTo(
         headerRef.current,
-        { y: -100, autoAlpha: 0 },
+        { y: -12 },
         {
           y: 0,
-          autoAlpha: 1,
-          duration: 0.8,
+          duration: 0.25,
           ease: "power3.out",
         }
       )
@@ -34,7 +34,7 @@ export function Navbar() {
         className="flex items-center gap-2 p-2 bg-background/80 backdrop-blur-xl border border-border/80 rounded-full shadow-[0_18px_50px_rgba(15,23,42,0.08)] pointer-events-auto"
       >
         <Link href="/" className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-accent transition-colors">
-          <img 
+          <Image width={40} height={40} sizes="40px"
             src="/logos/AS_LogoMini_TP%20Small.png" 
             alt="ALBOVSKY" 
             className="h-10 w-auto object-contain" 

@@ -1,8 +1,9 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { useLayoutEffect, useRef } from "react"
-import { gsap, ScrollTrigger } from "@/lib/gsap"
+import { gsap, ScrollTrigger } from "@/lib/gsap-scroll"
 
 const galleries = [
   {
@@ -137,13 +138,13 @@ export default function PhotoPage() {
             <div data-gallery-card className="relative">
               <div className="aspect-video overflow-hidden rounded-[2.5rem] relative border border-border shadow-[0_24px_60px_rgba(15,23,42,0.08)] bg-card">
                 <div className="absolute inset-0 bg-white/10 group-hover:bg-transparent transition-colors duration-500 z-10" />
-                <img
+                <Image fill sizes="(max-width: 767px) 100vw, 50vw"
                   src={gallery.image}
                   alt={gallery.title}
-                  className="w-full h-full object-cover grayscale-[10%] group-hover:scale-105 group-hover:grayscale-0 transition-all duration-700 [transition-timing-function:cubic-bezier(0.32,0.725,0.06,0.965)]"
+                  className="w-full h-full object-cover grayscale-[10%] group-hover:scale-105 group-hover:grayscale-0 transition-[transform,filter] duration-700 [transition-timing-function:cubic-bezier(0.32,0.725,0.06,0.965)]"
                 />
 
-                <div className="absolute top-6 left-6 z-20 flex flex-col items-start gap-2 opacity-0 group-hover:opacity-100 transition-all duration-500 -translate-y-2 group-hover:translate-y-0">
+                <div className="absolute top-6 left-6 z-20 flex flex-col items-start gap-2 opacity-0 group-hover:opacity-100 transition-[opacity,transform] duration-500 -translate-y-2 group-hover:translate-y-0">
                   <div className="bg-white/85 backdrop-blur-md border border-border px-4 py-2 rounded-2xl flex flex-col shadow-lg">
                     <span className="text-lg font-bold text-foreground tracking-tight leading-none mb-1">
                       {gallery.title}

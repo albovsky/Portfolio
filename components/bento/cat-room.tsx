@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore, type CSSProperties } from "react"
+import { memo, useCallback, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore, type CSSProperties } from "react"
 import Image from "next/image"
 import { Pixelify_Sans } from "next/font/google"
 import * as Dialog from "@radix-ui/react-dialog"
@@ -17,6 +17,9 @@ import "./cat-cozy-poses.css"
 import { initial, getActivityLabel, locations, sendTo, advanceResidents, type Name } from "./cat-life"
 
 const activityFont = Pixelify_Sans({ subsets: ["latin"], weight: "600", variable: "--font-cat-pixel", display: "swap" })
+
+const StaticRoomArt = memo(CatRoomArt)
+const StaticRoomYarn = memo(CatRoomYarn)
 
 export function CatRoom() {
   const root = useRef<HTMLDivElement>(null)
@@ -197,8 +200,8 @@ export function CatRoom() {
     setAnnouncement(action === "food" ? "Fish for Pusha. Chicken for Bonita." : action === "play" ? "A little yarn, a lot of excitement." : "Lights low. Time for a cozy nap.")
   }
   return <div className="cat-room" ref={root} data-night={night} data-paused="true" aria-label="Pusha and Bonita’s interactive pixel home">
-    <CatRoomArt />
-    <CatRoomYarn />
+    <StaticRoomArt />
+    <StaticRoomYarn />
     {isZooming && <CatZoomiesAnnouncement />}
     {isTumbling && <CatTumble />}
     <div className="cat-room-evening" aria-hidden="true" />

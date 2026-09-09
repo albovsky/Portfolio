@@ -66,7 +66,7 @@ export default function MotionPage() {
             className="aspect-video bg-card relative group overflow-hidden rounded-none border border-border hover:border-primary/40 transition-colors shadow-[0_18px_50px_rgba(15,23,42,0.06)]"
           >
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-16 h-16 rounded-full border border-border flex items-center justify-center group-hover:scale-150 group-hover:bg-primary group-hover:border-primary transition-all duration-500">
+              <div className="w-16 h-16 rounded-full border border-border flex items-center justify-center group-hover:scale-150 group-hover:bg-primary group-hover:border-primary transition-[transform,opacity,background-color] duration-500">
                 <div className="w-0 h-0 border-t-[6px] border-t-transparent border-l-[10px] border-l-foreground border-b-[6px] border-b-transparent ml-1 group-hover:border-l-primary-foreground transition-colors" />
               </div>
             </div>

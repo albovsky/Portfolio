@@ -1,5 +1,5 @@
-import { promises as fs } from 'fs'
-import path from 'path'
+import Image from 'next/image'
+import photoMetadata from '@/lib/photo-metadata.json'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 
@@ -25,6 +25,10 @@ const projects = [
   { title: "Shadows", category: "Experimental", year: "2022", slug: "shadows" },
 ]
 
+export function generateStaticParams() {
+  return projects.map(({ slug }) => ({ slug }))
+}
+
 export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   const project = projects.find(p => p.slug === slug)
@@ -33,21 +37,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
     return <div className="min-h-screen flex items-center justify-center">Project not found</div>
   }
 
-  let images: string[] = []
-  
-  try {
-    // Try to read images from the project directory
-    const projectDir = path.join(process.cwd(), 'public', 'projects', 'photo', slug)
-    const files = await fs.readdir(projectDir)
-    
-    images = files
-      .filter(file => /\.(jpg|jpeg|png|webp)$/i.test(file))
-      .filter(file => !file.startsWith('.')) // Ignore hidden files
-      .map(file => `/projects/photo/${slug}/${file}`)
-  } catch (error) {
-    // Directory might not exist for dummy projects
-    console.log(`Could not read directory for ${slug}`)
-  }
+  const images = Object.entries(photoMetadata).filter(([src]) => src.startsWith(`/projects/photo/${slug}/`))
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -75,9 +65,11 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
       <div className="px-6 md:px-12 pb-24">
         {images.length > 0 ? (
           <div className="columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4">
-            {images.map((image, index) => (
-              <div key={index} className="break-inside-avoid">
-                <img 
+            {images.map(([image, dimensions], index) => (
+              <div key={image} className="break-inside-avoid">
+                <Image
+                  {...dimensions}
+                  sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw"
                   src={image} 
                   alt={`${project.title} - ${index + 1}`} 
                   className="w-full h-auto rounded-lg hover:opacity-90 transition-opacity"

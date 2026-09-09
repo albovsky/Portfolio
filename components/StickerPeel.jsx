@@ -1,12 +1,14 @@
 import { useRef, useEffect, useMemo } from 'react';
+import Image from 'next/image';
 import { gsap } from 'gsap';
-import { Draggable } from 'gsap/all';
+import { Draggable } from 'gsap/dist/Draggable';
 import './StickerPeel.css';
 
 gsap.registerPlugin(Draggable);
 
 const StickerPeel = ({
   imageSrc,
+  alt = "",
   rotate = 30,
   peelBackHoverPct = 30,
   peelBackActivePct = 40,
@@ -105,7 +107,7 @@ const StickerPeel = ({
         draggableInstanceRef.current.kill();
       }
     };
-  }, []);
+  }, [draggable]);
 
   useEffect(() => {
     const updateLight = e => {
@@ -236,9 +238,9 @@ const StickerPeel = ({
       <div className="sticker-container" ref={containerRef}>
         <div className="sticker-main">
           <div className="sticker-lighting">
-            <img
+            <Image width={512} height={512} sizes="240px"
               src={imageSrc}
-              alt=""
+              alt={alt}
               className="sticker-image"
               draggable="false"
               onContextMenu={e => e.preventDefault()}
@@ -248,7 +250,7 @@ const StickerPeel = ({
 
         <div className="flap">
           <div className="flap-lighting">
-            <img
+            <Image width={512} height={512} sizes="240px"
               src={imageSrc}
               alt=""
               className="flap-image"

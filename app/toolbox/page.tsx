@@ -3,6 +3,7 @@
 import { useLayoutEffect, useRef } from "react"
 import { ArrowUpRight } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 import { gsap } from "@/lib/gsap"
 
 // ----------------------------------------------------------------------
@@ -200,7 +201,7 @@ export default function ToolboxPage() {
                 {/* Icon Container */}
                 <div className={`w-10 h-10 rounded-full ${app.color} flex items-center justify-center text-lg text-white overflow-hidden shrink-0 pointer-events-none`}>
                   {app.image ? (
-                    <img 
+                    <Image width={40} height={40} sizes="40px"
                       src={app.image} 
                       alt={app.name} 
                       className="w-full h-full object-cover opacity-100 pointer-events-none select-none" 
@@ -243,7 +244,7 @@ export default function ToolboxPage() {
                 {/* Icon Container */}
                 <div className={`w-10 h-10 rounded-full ${app.color} flex items-center justify-center text-lg text-white overflow-hidden shrink-0 pointer-events-none`}>
                   {app.image ? (
-                    <img 
+                    <Image width={40} height={40} sizes="40px"
                       src={app.image} 
                       alt={app.name} 
                       className="w-full h-full object-cover opacity-100 pointer-events-none select-none" 
@@ -286,7 +287,7 @@ export default function ToolboxPage() {
                 {/* Icon Container */}
                 <div className={`w-10 h-10 rounded-full ${app.color} flex items-center justify-center text-lg text-white overflow-hidden shrink-0 pointer-events-none`}>
                   {app.image ? (
-                    <img 
+                    <Image width={40} height={40} sizes="40px"
                       src={app.image} 
                       alt={app.name} 
                       className="w-full h-full object-cover opacity-100 pointer-events-none select-none" 
@@ -336,7 +337,7 @@ export default function ToolboxPage() {
               {/* Image - Unclipped */}
               {item.image && (
                 <div className="absolute top-8 left-1/2 -translate-x-1/2 w-[70%] -translate-y-1/2 z-10">
-                  <img 
+                  <Image width={480} height={288} sizes="(max-width: 767px) 70vw, 300px"
                     src={item.image} 
                     alt={item.title} 
                     className="w-full h-48 object-contain drop-shadow-2xl"
@@ -353,7 +354,7 @@ export default function ToolboxPage() {
               
               <Link 
                 href={item.link} 
-                className="relative z-10 text-xs font-mono text-primary uppercase tracking-wider flex items-center gap-1 hover:gap-2 transition-all"
+                className="relative z-10 text-xs font-mono text-primary uppercase tracking-wider flex items-center gap-1 hover:gap-2 transition-[transform,opacity]"
               >
                 Learn more <ArrowUpRight className="w-3 h-3" />
               </Link>

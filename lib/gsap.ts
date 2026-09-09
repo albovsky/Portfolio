@@ -1,10 +1,4 @@
 "use client"
 
-import { gsap } from "gsap"
-import { Draggable, ScrollTrigger } from "gsap/all"
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(Draggable, ScrollTrigger)
-}
-
-export { Draggable, ScrollTrigger, gsap }
+// Core animation only. Optional plugins live in their feature bundles.
+export { gsap } from "gsap"

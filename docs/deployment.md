@@ -35,3 +35,15 @@ npm exec --yes --package=vercel -- vercel deploy --prod --scope glibs-projects-0
 ```
 
 Repository: https://github.com/albovsky/Portfolio. Automatic Git deployment is not configured; production updates currently use the Vercel CLI.
+
+## Performance and visual assets
+
+The portrait is generated from the original character/tone data into a standalone SVG. This keeps the glyphs out of React hydration. The hidden game, sticker renderer, and drag plugin load only when opened. Gallery pages are pre-rendered and use responsive Next.js image optimization with recorded intrinsic dimensions.
+
+After adding gallery photos or editing the portrait character data, regenerate the checked-in assets before building:
+
+```sh
+npm run assets:generate
+```
+
+The country-card ambient animation pauses outside the viewport and when the document is hidden. Static cat-room artwork is memoized independently from the changing residents.
