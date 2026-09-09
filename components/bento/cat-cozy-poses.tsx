@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import type { Palette } from "./cat-sprite"
+import type { Palette } from "./cat-palette"
 
 function RestingFeet({ p, kneading = false }: { p: Palette; kneading?: boolean }) {
   return <g>

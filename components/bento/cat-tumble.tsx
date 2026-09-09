@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react"
-import { CatSprite, catPalettes } from "./cat-sprite"
+import { CatSprite } from "./cat-sprite"
+import { catPalettes } from "./cat-palette"
 
 export function CatTumble() {
   return <div className="cat-tumble" aria-hidden="true">

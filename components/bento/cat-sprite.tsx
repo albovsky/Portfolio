@@ -2,11 +2,8 @@ import { CatEffects, CatGait } from "./cat-motion"
 import { CatCozyPose } from "./cat-cozy-poses"
 import { CatScratchPose } from "./cat-scratch-pose"
 
-export type Palette = { outline: string; coat: string; shade: string; light: string; bib: string; stripe: string; eye: string; nose: string; ear: string }
-export const catPalettes: Record<"Pusha" | "Bonita", Palette> = {
-  Pusha: { outline:"#826348", coat:"#e5c49a", shade:"#c8a176", light:"#fff4e3", bib:"#fffaf2", stripe:"#bd9468", eye:"#b38a47", nose:"#ab796d", ear:"#e0b29a" },
-  Bonita: { outline:"#785039", coat:"#cf914f", shade:"#a66a38", light:"#eab475", bib:"#e6b47d", stripe:"#a96636", eye:"#ad8545", nose:"#9b6758", ear:"#d69580" },
-}
+import { catPalettes, type Palette } from "./cat-palette"
+
 // All views use a 34px head height, 4px ears, and the same cheek/jaw level.
 // Front and rear share the exact silhouette; the profile is narrower in perspective.
 const roundHeadOutline = "M5 8V2h9v4h14V2h9v6h3v6h2v12h-3v5h-6v3H9v-3H3v-5H0V14h2V8Z"
@@ -80,12 +77,43 @@ export function CatSprite({ name, activity = "idle", facing = 1 }: { name: "Push
     <path className="cat-ground-shadow" d="M13 74h39v2h5v2H9v-2h4Z" fill="#70563c" opacity=".14" />
     <g transform={((moving && facing === -1) || (activity === "play" && name === "Pusha")) ? "translate(64 0) scale(-1 1)" : undefined}>
       <g className="cat-pose-motion">
-      {["groom", "belly", "silly", "snuggle"].includes(activity) ? <CatCozyPose p={p} name={name} activity={activity} head={<FrontHead p={p} />} closedHead={<FrontHead p={p} sleeping />} sideHead={<SideHead p={p} />} body={<StandingBody p={p} />} /> : activity === "sleep" ? <>
+      <CatPose p={p} name={name} activity={activity} />
+      </g>
+      <CatEffects activity={activity} />
+    </g>
+  </svg>
+}
+
+
+type CatPoseProps = { p: Palette; name: "Pusha" | "Bonita"; activity: string }
+
+function CatPose({ p, name, activity }: CatPoseProps) {
+  if (["groom", "belly", "silly", "snuggle"].includes(activity)) {
+    return <CatCozyPose p={p} name={name} activity={activity} head={<FrontHead p={p} />} closedHead={<FrontHead p={p} sleeping />} sideHead={<SideHead p={p} />} body={<StandingBody p={p} />} />
+  }
+  switch (activity) {
+    case "sleep": return <SleepingCat p={p} name={name} />
+    case "watch": return <WatchingCat p={p} />
+    case "walk":
+    case "zoomies": return <CatGait p={p} sprint={activity === "zoomies"} head={<SideHead p={p} />} />
+    case "eat": return <EatingCat p={p} />
+    case "scratch": return <CatScratchPose p={p} head={<SideHead p={p} />} />
+    default: return <RestingCat p={p} />
+  }
+}
+
+function SleepingCat({ p, name }: Pick<CatPoseProps, "p" | "name">) {
+  return <>
         <g className="cat-sleep-belly"><path d="M24 46h22v4h8v7h5v14h-5v4H12v-4H7V60h6v-8h11Z" fill={p.outline} /><path d="M25 49h19v4h8v6h4v10h-5v4H13v-4h-3v-7h6v-8h9Z" fill={p.coat} /><path d="M29 52h4v8h-4m10-7h4v9h-4m9-3h4v7h-4" fill={p.stripe} /><path d="M22 67h26v5H22" fill={p.light} /></g>
         <g transform="translate(4 39)"><g className="cat-sleep-head"><g transform={name === "Pusha" ? "translate(3 0) scale(.86 1)" : undefined}><FrontHead p={p} sleeping /></g></g></g>
         <path className="cat-dream-paw" d="M18 69h9v5H16v-3h2Z" fill={p.light} />
         <g className="cat-curled-tail"><path d="M52 60h7v10h-5v5H25v-4h-6v-7h8v5h24v-4h1Z" fill={p.outline} /><path d="M54 61h3v7h-5v5H27v-4h-6v-3h4v5h25v-4h4Z" fill={p.shade} /><path d="M27 69h10v3H27Z" fill={p.light} /></g>
-      </> : activity === "watch" ? <>
+
+  </>
+}
+
+function WatchingCat({ p }: Pick<CatPoseProps, "p">) {
+  return <>
         <StandingBody p={p} back />
         <path d="M18 70h10v6H16v-3h2m18-3h10v3h2v3H36Z" fill={p.light} />
         <path d="M28 44h5v8h-5m-8 3h6v4h-6m13-4h6v4h-6m-11 6h5v5h-5" fill={p.stripe} />
@@ -102,22 +130,29 @@ export function CatSprite({ name, activity = "idle", facing = 1 }: { name: "Push
           <path d="M30 62h4v5h-4Z" fill={p.coat} />
         </g>
         <g transform="translate(11 21)"><g className="cat-window-head"><BackHead p={p} /></g></g>
-      </> : moving ? <CatGait p={p} sprint={activity === "zoomies"} head={<SideHead p={p} />} /> : activity === "eat" ? <>
+
+  </>
+}
+
+function EatingCat({ p }: Pick<CatPoseProps, "p">) {
+  return <>
         <g className="cat-side-tail"><path d="M15 51H8v-7H4V29h6v13h4v3h5Z" fill={p.outline} /><path d="M13 49H9v-7H6V31h2v13h4v3h3Z" fill={p.shade} /><rect x="6" y="31" width="2" height="5" fill={p.light} /></g>
         <Paw p={p} x={18} className="cat-leg cat-leg-back-far" /><Paw p={p} x={42} className="cat-leg cat-leg-front-far" />
         <g className="cat-side-body"><path d="M17 39h26v4h8v19h-5v5H13v-6H9V49h4v-7h4Z" fill={p.outline} /><path d="M18 42h24v4h6v14h-5v4H15v-5h-3v-9h4v-6h2Z" fill={p.coat} /><path d="M19 45h4v9h-4m9-11h4v10h-4m9-8h4v9h-4" fill={p.stripe} /><path d="M19 59h23v4H19Z" fill={p.bib} /></g>
         <Paw p={p} x={14} className="cat-leg cat-leg-back" /><Paw p={p} x={38} className="cat-leg cat-leg-front" />
         <g transform="translate(27 25)"><g className="cat-side-head"><SideHead p={p} /></g></g>
-        {activity === "eat" && <g className="cat-food-crumbs" fill={p.light}><rect x="56" y="66" width="2" height="2" /><rect x="60" y="69" width="2" height="2" /><rect x="54" y="71" width="2" height="2" /></g>}
-      </> : activity === "scratch" ? <CatScratchPose p={p} head={<SideHead p={p} />} /> : <>
+        <g className="cat-food-crumbs" fill={p.light}><rect x="56" y="66" width="2" height="2" /><rect x="60" y="69" width="2" height="2" /><rect x="54" y="71" width="2" height="2" /></g>
+
+  </>
+}
+
+function RestingCat({ p }: Pick<CatPoseProps, "p">) {
+  return <>
         <g className="cat-happy-tail"><path d="M45 55h8v12h6v7H44v-5h1Z" fill={p.outline} /><path d="M47 57h4v12h6v3H46v-3h1Z" fill={p.shade} /><rect x="51" y="69" width="6" height="3" fill={p.light} /></g>
         <StandingBody p={p} />
         <g className="cat-play-paw cat-play-paw-left"><path d="M18 59h9v17H15v-7h3Z" fill={p.outline} /><path d="M20 59h5v13h-8v-2h3Z" fill={p.light} /><path d="M20 72v2m3-2v2" stroke={p.shade} /></g>
         <g className="cat-play-paw cat-play-paw-right"><path d="M36 59h9v10h3v7H36Z" fill={p.outline} /><path d="M38 59h5v11h3v2h-8Z" fill={p.light} /><path d="M40 72v2m3-2v2" stroke={p.shade} /></g>
         <g transform="translate(11 21)"><g className="cat-front-head"><FrontHead p={p} /></g></g>
-      </>}
-      </g>
-      <CatEffects activity={activity} />
-    </g>
-  </svg>
+
+  </>
 }

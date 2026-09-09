@@ -3,18 +3,23 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { gsap } from "@/lib/gsap"
 
 export function TimeTooltip() {
-  const [time, setTime] = useState(new Date())
+  const [time, setTime] = useState<{ hours: number; minutes: number; label: string } | null>(null)
   const tooltipRef = useRef<HTMLDivElement>(null)
   const bodyRef = useRef<HTMLDivElement>(null)
   const progressRef = useRef({ value: 0 })
 
   useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 60000)
-    return () => clearInterval(timer)
+    const updateTime = () => {
+      const now = new Date()
+      setTime({ hours: now.getHours(), minutes: now.getMinutes(), label: now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) })
+    }
+    const frame = requestAnimationFrame(updateTime)
+    const timer = setInterval(updateTime, 60000)
+    return () => { cancelAnimationFrame(frame); clearInterval(timer) }
   }, [])
 
-  const hours = time.getHours()
-  const minutes = time.getMinutes()
+  const hours = time?.hours ?? 12
+  const minutes = time?.minutes ?? 0
   const isDay = hours >= 6 && hours < 18
 
   let targetProgress = 0
@@ -106,10 +111,10 @@ export function TimeTooltip() {
 
         <div className="text-center">
           <div className="text-2xl font-mono font-bold text-foreground">
-            {time.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+            {time?.label ?? "—:—"}
           </div>
           <div className="text-xs text-muted-foreground font-mono uppercase tracking-wider">
-            {isDay ? "Daytime" : "Nighttime"}
+            {time ? (isDay ? "Daytime" : "Nighttime") : "Local time"}
           </div>
         </div>
       </div>

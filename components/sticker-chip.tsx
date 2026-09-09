@@ -19,7 +19,134 @@ export function StickerChip({
   isTemplate?: boolean
   isPlaceholder?: boolean
 }) {
-  if (isPlaceholder) {
+  if (isPlaceholder) return <StickerPlaceholder sticker={sticker} isTemplate={isTemplate} />
+
+  const interactionClassName = isActive ? "cursor-grabbing" : "cursor-grab"
+  const activeClassName = isActive
+    ? "shadow-[0_22px_38px_rgba(15,23,42,0.2)]"
+    : "shadow-[0_10px_18px_rgba(15,23,42,0.1)]"
+
+  const props = { sticker, isTemplate, isActive, interactionClassName, activeClassName }
+  switch (sticker.styleVariant) {
+    case "mono": return <MonoSticker {...props} />
+    case "serif": return <SerifSticker {...props} />
+    case "capsule": return <CapsuleSticker {...props} />
+    case "image": return <CatImageSticker {...props} />
+    default: return <RoundSticker {...props} />
+  }
+}
+
+type StickerVariantProps = {
+  sticker: StickerTemplate | PlacedSticker
+  isTemplate: boolean
+  isActive: boolean
+  interactionClassName: string
+  activeClassName: string
+}
+
+function MonoSticker({ sticker, isTemplate, activeClassName, interactionClassName }: StickerVariantProps) {
+    return (
+      <StickerSurface
+        width={isTemplate ? 168 : 196}
+        height={100}
+        activeClassName={activeClassName}
+        interactionClassName={interactionClassName}
+        className="rounded-[999px] bg-[#0d0d10] text-[#f4f4ef]"
+      >
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.18),transparent_32%),linear-gradient(145deg,rgba(255,255,255,0.12),transparent_45%)]" />
+        <div className="absolute inset-[3px] rounded-[999px] border border-white/10" />
+        <span className="relative max-w-[10ch] font-display text-[1.05rem] font-black uppercase leading-[0.88] tracking-[-0.05em] [text-shadow:0_1px_0_rgba(255,255,255,0.12)]">
+          {sticker.label}
+        </span>
+      </StickerSurface>
+    )
+}
+
+function SerifSticker({ sticker, isTemplate, activeClassName, interactionClassName }: StickerVariantProps) {
+    return (
+      <StickerSurface
+        width={isTemplate ? 168 : 196}
+        height={114}
+        activeClassName={activeClassName}
+        interactionClassName={interactionClassName}
+        className="bg-transparent"
+      >
+        <div className="absolute left-[3%] top-[32%] h-[40%] w-[24%] rounded-full bg-[linear-gradient(135deg,#d8ff7a_0%,#f7d3ff_18%,#9be2ff_36%,#fff6a3_54%,#c0f8d4_72%,#b6a7ff_88%,#ffd4e6_100%)] p-[6px]">
+          <div className="h-full w-full rounded-full bg-[#101219]" />
+        </div>
+        <div className="absolute left-[18%] top-[10%] h-[52%] w-[28%] rounded-full bg-[linear-gradient(135deg,#d8ff7a_0%,#f7d3ff_18%,#9be2ff_36%,#fff6a3_54%,#c0f8d4_72%,#b6a7ff_88%,#ffd4e6_100%)] p-[6px]">
+          <div className="h-full w-full rounded-full bg-[#101219]" />
+        </div>
+        <div className="absolute left-[34%] top-[2%] h-[60%] w-[30%] rounded-full bg-[linear-gradient(135deg,#d8ff7a_0%,#f7d3ff_18%,#9be2ff_36%,#fff6a3_54%,#c0f8d4_72%,#b6a7ff_88%,#ffd4e6_100%)] p-[6px]">
+          <div className="h-full w-full rounded-full bg-[#101219]" />
+        </div>
+        <div className="absolute right-[20%] top-[10%] h-[52%] w-[28%] rounded-full bg-[linear-gradient(135deg,#d8ff7a_0%,#f7d3ff_18%,#9be2ff_36%,#fff6a3_54%,#c0f8d4_72%,#b6a7ff_88%,#ffd4e6_100%)] p-[6px]">
+          <div className="h-full w-full rounded-full bg-[#101219]" />
+        </div>
+        <div className="absolute right-[4%] top-[32%] h-[40%] w-[24%] rounded-full bg-[linear-gradient(135deg,#d8ff7a_0%,#f7d3ff_18%,#9be2ff_36%,#fff6a3_54%,#c0f8d4_72%,#b6a7ff_88%,#ffd4e6_100%)] p-[6px]">
+          <div className="h-full w-full rounded-full bg-[#101219]" />
+        </div>
+        <div className="absolute left-[22%] top-[32%] h-[42%] w-[56%] rounded-[999px] bg-[linear-gradient(135deg,#d8ff7a_0%,#f7d3ff_18%,#9be2ff_36%,#fff6a3_54%,#c0f8d4_72%,#b6a7ff_88%,#ffd4e6_100%)] p-[6px]">
+          <div className="h-full w-full rounded-[999px] bg-[#101219]" />
+        </div>
+        <div className="relative z-10 flex h-full items-center justify-center px-5 text-[#f5f4ff]">
+          <span className="max-w-[7ch] font-serif text-[0.92rem] font-semibold leading-[0.93] tracking-[-0.04em]">
+            {sticker.label}
+          </span>
+          <div className="absolute bottom-[20%] left-1/2 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-white/70 blur-[1px]" />
+        </div>
+      </StickerSurface>
+    )
+}
+
+function CapsuleSticker({ sticker, isTemplate, activeClassName, interactionClassName }: StickerVariantProps) {
+    return (
+      <PeelableCapsuleSticker
+        width={isTemplate ? 168 : 196}
+        height={100}
+        activeClassName={activeClassName}
+        interactionClassName={interactionClassName}
+        label={sticker.label}
+      />
+    )
+}
+
+function CatImageSticker({ sticker, isTemplate, isActive, interactionClassName }: StickerVariantProps) {
+    return (
+      <ImageSticker
+        width={isTemplate ? 142 : 160}
+        height={isTemplate ? 156 : 176}
+        interactionClassName={interactionClassName}
+        isActive={isActive}
+        src={stickerImageSrc}
+        alt={sticker.label}
+      />
+    )}
+
+function RoundSticker({ sticker, isTemplate, activeClassName, interactionClassName }: StickerVariantProps) {
+  return (
+    <StickerSurface
+      width={isTemplate ? 126 : 132}
+      height={132}
+      activeClassName={activeClassName}
+      interactionClassName={interactionClassName}
+      wrapperExtraClassName={isTemplate ? "mx-auto" : ""}
+      className="rounded-full bg-[#0f1118] text-[#eef0ff]"
+    >
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.18),transparent_30%),radial-gradient(circle_at_70%_80%,rgba(171,130,255,0.16),transparent_34%)]" />
+      <div className="absolute inset-[5px] rounded-full border border-white/10" />
+      <div className="relative mx-auto flex max-w-[5.2ch] flex-col items-center gap-1">
+        <div className="text-[0.76rem] font-display font-black uppercase leading-[0.84] tracking-[-0.04em]">
+          {sticker.label}
+        </div>
+        <div className="h-2.5 w-2.5 rounded-full border border-white/30 bg-white/12" />
+      </div>
+    </StickerSurface>
+  )
+}
+
+function StickerPlaceholder({ sticker, isTemplate }: { sticker: StickerTemplate | PlacedSticker; isTemplate: boolean }) {
+
     const { width, height } = getStickerDimensions(sticker.styleVariant, isTemplate)
     if (sticker.styleVariant === "image") {
       return (
@@ -62,112 +189,6 @@ export function StickerChip({
         className={`flex items-center justify-center border-2 border-dashed border-foreground/15 bg-black/[0.03] ${roundedClass}`}
       />
     )
-  }
-
-  const interactionClassName = isActive ? "cursor-grabbing" : "cursor-grab"
-  const activeClassName = isActive
-    ? "shadow-[0_22px_38px_rgba(15,23,42,0.2)]"
-    : "shadow-[0_10px_18px_rgba(15,23,42,0.1)]"
-
-  if (sticker.styleVariant === "mono") {
-    return (
-      <StickerSurface
-        width={isTemplate ? 168 : 196}
-        height={100}
-        activeClassName={activeClassName}
-        interactionClassName={interactionClassName}
-        className="rounded-[999px] bg-[#0d0d10] text-[#f4f4ef]"
-      >
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.18),transparent_32%),linear-gradient(145deg,rgba(255,255,255,0.12),transparent_45%)]" />
-        <div className="absolute inset-[3px] rounded-[999px] border border-white/10" />
-        <span className="relative max-w-[10ch] font-display text-[1.05rem] font-black uppercase leading-[0.88] tracking-[-0.05em] [text-shadow:0_1px_0_rgba(255,255,255,0.12)]">
-          {sticker.label}
-        </span>
-      </StickerSurface>
-    )
-  }
-
-  if (sticker.styleVariant === "serif") {
-    return (
-      <StickerSurface
-        width={isTemplate ? 168 : 196}
-        height={114}
-        activeClassName={activeClassName}
-        interactionClassName={interactionClassName}
-        className="bg-transparent"
-      >
-        <div className="absolute left-[3%] top-[32%] h-[40%] w-[24%] rounded-full bg-[linear-gradient(135deg,#d8ff7a_0%,#f7d3ff_18%,#9be2ff_36%,#fff6a3_54%,#c0f8d4_72%,#b6a7ff_88%,#ffd4e6_100%)] p-[6px]">
-          <div className="h-full w-full rounded-full bg-[#101219]" />
-        </div>
-        <div className="absolute left-[18%] top-[10%] h-[52%] w-[28%] rounded-full bg-[linear-gradient(135deg,#d8ff7a_0%,#f7d3ff_18%,#9be2ff_36%,#fff6a3_54%,#c0f8d4_72%,#b6a7ff_88%,#ffd4e6_100%)] p-[6px]">
-          <div className="h-full w-full rounded-full bg-[#101219]" />
-        </div>
-        <div className="absolute left-[34%] top-[2%] h-[60%] w-[30%] rounded-full bg-[linear-gradient(135deg,#d8ff7a_0%,#f7d3ff_18%,#9be2ff_36%,#fff6a3_54%,#c0f8d4_72%,#b6a7ff_88%,#ffd4e6_100%)] p-[6px]">
-          <div className="h-full w-full rounded-full bg-[#101219]" />
-        </div>
-        <div className="absolute right-[20%] top-[10%] h-[52%] w-[28%] rounded-full bg-[linear-gradient(135deg,#d8ff7a_0%,#f7d3ff_18%,#9be2ff_36%,#fff6a3_54%,#c0f8d4_72%,#b6a7ff_88%,#ffd4e6_100%)] p-[6px]">
-          <div className="h-full w-full rounded-full bg-[#101219]" />
-        </div>
-        <div className="absolute right-[4%] top-[32%] h-[40%] w-[24%] rounded-full bg-[linear-gradient(135deg,#d8ff7a_0%,#f7d3ff_18%,#9be2ff_36%,#fff6a3_54%,#c0f8d4_72%,#b6a7ff_88%,#ffd4e6_100%)] p-[6px]">
-          <div className="h-full w-full rounded-full bg-[#101219]" />
-        </div>
-        <div className="absolute left-[22%] top-[32%] h-[42%] w-[56%] rounded-[999px] bg-[linear-gradient(135deg,#d8ff7a_0%,#f7d3ff_18%,#9be2ff_36%,#fff6a3_54%,#c0f8d4_72%,#b6a7ff_88%,#ffd4e6_100%)] p-[6px]">
-          <div className="h-full w-full rounded-[999px] bg-[#101219]" />
-        </div>
-        <div className="relative z-10 flex h-full items-center justify-center px-5 text-[#f5f4ff]">
-          <span className="max-w-[7ch] font-serif text-[0.92rem] font-semibold leading-[0.93] tracking-[-0.04em]">
-            {sticker.label}
-          </span>
-          <div className="absolute bottom-[20%] left-1/2 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-white/70 blur-[1px]" />
-        </div>
-      </StickerSurface>
-    )
-  }
-
-  if (sticker.styleVariant === "capsule") {
-    return (
-      <PeelableCapsuleSticker
-        width={isTemplate ? 168 : 196}
-        height={100}
-        activeClassName={activeClassName}
-        interactionClassName={interactionClassName}
-        label={sticker.label}
-      />
-    )
-  }
-
-  if (sticker.styleVariant === "image") {
-    return (
-      <ImageSticker
-        width={isTemplate ? 142 : 160}
-        height={isTemplate ? 156 : 176}
-        interactionClassName={interactionClassName}
-        isActive={isActive}
-        src={stickerImageSrc}
-        alt={sticker.label}
-      />
-    )
-  }
-
-  return (
-    <StickerSurface
-      width={isTemplate ? 126 : 132}
-      height={132}
-      activeClassName={activeClassName}
-      interactionClassName={interactionClassName}
-      wrapperExtraClassName={isTemplate ? "mx-auto" : ""}
-      className="rounded-full bg-[#0f1118] text-[#eef0ff]"
-    >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.18),transparent_30%),radial-gradient(circle_at_70%_80%,rgba(171,130,255,0.16),transparent_34%)]" />
-      <div className="absolute inset-[5px] rounded-full border border-white/10" />
-      <div className="relative mx-auto flex max-w-[5.2ch] flex-col items-center gap-1">
-        <div className="text-[0.76rem] font-display font-black uppercase leading-[0.84] tracking-[-0.04em]">
-          {sticker.label}
-        </div>
-        <div className="h-2.5 w-2.5 rounded-full border border-white/30 bg-white/12" />
-      </div>
-    </StickerSurface>
-  )
 }
 
 function StickerSurface({

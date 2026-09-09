@@ -230,8 +230,11 @@ export function CatRoom() {
           <div className="cat-personality" data-name={cat.name} aria-label={`${cat.name}’s personality stats`}>
             {(cat.name === "Pusha" ? pushaStats : bonitaStats).map(({label,value,rating}) => <div className="cat-personality-row" key={label}>
               <span>{label}</span>
-              <span className="cat-personality-bar" role="meter" aria-label={label} aria-valuemin={0} aria-valuemax={10} aria-valuenow={value} aria-valuetext={rating === "MAX" ? "Maximum" : `${value} out of 10`}>
+              <span>
+                <meter className="sr-only" min={0} max={10} value={value} aria-label={label} aria-valuetext={rating === "MAX" ? "Maximum" : `${value} out of 10`} />
+                <span className="cat-personality-bar" aria-hidden="true">
                 {Array.from({length:10},(_,index)=><i key={index} data-filled={index < value} />)}
+                </span>
               </span>
               <strong aria-hidden="true">{rating}</strong>
             </div>)}

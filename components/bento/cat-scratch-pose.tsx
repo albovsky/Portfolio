@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode } from "react"
-import type { Palette } from "./cat-sprite"
+import type { Palette } from "./cat-palette"
 
 // Shoulder stays attached; the elbow bends while the paw lifts away from the
 // rope, reaches up, plants, and pulls down. The other paw takes the next stroke.

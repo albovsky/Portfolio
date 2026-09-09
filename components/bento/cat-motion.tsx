@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode } from "react"
-import type { Palette } from "./cat-sprite"
+import type { Palette } from "./cat-palette"
 
 // Eight drawn poses: contact, weight-bearing, passing, lift, and recovery.
 // Knees fold during recovery; planted paws travel back underneath the body.

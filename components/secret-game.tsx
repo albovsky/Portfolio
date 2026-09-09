@@ -152,6 +152,7 @@ export function SecretGame({ isOpen, onClose }: { isOpen: boolean; onClose: () =
         />
 
         <button
+          aria-label="Close secret game"
           onClick={onClose}
           className="absolute top-6 right-6 text-zinc-500 hover:text-white transition-colors z-50 bg-zinc-900/50 p-2 rounded-full"
         >
@@ -185,9 +186,9 @@ export function SecretGame({ isOpen, onClose }: { isOpen: boolean; onClose: () =
               ref={wheelRef}
               className="w-full h-full rounded-full border-8 border-zinc-900 relative overflow-hidden bg-zinc-900 shadow-2xl"
             >
-              {prizes.map((_, index) => (
+              {prizes.map((prize, index) => (
                 <div
-                  key={`bg-real-${index}`}
+                  key={prize}
                   className="absolute top-0 left-0 w-full h-full"
                   style={{
                     transform: `rotate(${index * SLICE_ANGLE}deg)`,
@@ -196,9 +197,9 @@ export function SecretGame({ isOpen, onClose }: { isOpen: boolean; onClose: () =
                 />
               ))}
 
-              {prizes.map((_, index) => (
+              {prizes.map((prize, index) => (
                 <div
-                  key={`line-${index}`}
+                  key={prize}
                   className="absolute top-0 left-1/2 h-1/2 w-[2px] bg-black/20 origin-bottom z-10"
                   style={{ transform: `translateX(-50%) rotate(${index * SLICE_ANGLE}deg)` }}
                 />
@@ -206,7 +207,7 @@ export function SecretGame({ isOpen, onClose }: { isOpen: boolean; onClose: () =
 
               {prizes.map((prize, index) => (
                 <div
-                  key={`text-${index}`}
+                  key={prize}
                   className="absolute top-0 left-1/2 w-16 -ml-8 h-1/2 origin-bottom flex justify-center pt-8 pb-12 z-20"
                   style={{ transform: `rotate(${index * SLICE_ANGLE + SLICE_ANGLE / 2}deg)` }}
                 >
