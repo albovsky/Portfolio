@@ -157,20 +157,15 @@
 .bento-section { max-width: 1440px; margin: 0 auto; padding: 128px 24px 112px; }
 .bento-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--bento-gap); position: relative; }
 .bento-card { container-type: inline-size; min-width: 0; position: relative; border: 1px solid transparent; border-radius: var(--bento-radius); background: #ffffffbf; box-shadow: 0 12px 40px #1820260a; isolation: isolate; }
-/* A static, light-catching rim shared by every card, above its artwork. */
+/* Keep the rim transparent inside, without browser-dependent mask compositing. */
 .bento-card::before {
   content: "";
   position: absolute;
   inset: -1px;
   z-index: 15;
-  padding: 1px;
+  border: 1px solid #ffffff80;
   border-radius: inherit;
   pointer-events: none;
-  background: linear-gradient(135deg, #ffffff 0%, #ffffffcc 24%, #9da9964d 52%, #ffffffeb 78%, #aab4a43d 100%);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask-composite: exclude;
 }
 .bento-content { position: relative; display: flex; flex-direction: column; gap: 24px; padding: var(--bento-padding); height: 100%; min-width: 0; }
 .bento-label { font: 500 11px/1.5 var(--font-jetbrains), monospace; text-transform: uppercase; letter-spacing: .1em; color: #626660; }
